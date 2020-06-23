@@ -1,10 +1,7 @@
 from datetime import datetime
-
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy import Table, Column, Integer, Numeric, String, DateTime, Boolean
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint, UniqueConstraint, CheckConstraint
-from sqlalchemy import Index
-
+from sqlalchemy import (MetaData, Table, Column, Integer, Numeric, String,
+                        DateTime, ForeignKey, Boolean, create_engine,
+                        CheckConstraint)
 
 metadata = MetaData()
 
@@ -14,7 +11,8 @@ cookies = Table('cookies', metadata,
     Column('cookie_recipe_url', String(255)),
     Column('cookie_sku', String(55)),
     Column('quantity', Integer()),
-    Column('unit_cost', Numeric(12, 2))
+    Column('unit_cost', Numeric(12, 2)),
+    CheckConstraint('quantity >= 0', name='quantity_positive')
 )
 
 users = Table('users', metadata,
@@ -28,9 +26,9 @@ users = Table('users', metadata,
 )
 
 orders = Table('orders', metadata,
-    Column('order_id', Integer(), primary_key=True),
-    Column('user_id', ForeignKey('users.user_id')),
-    Column('shipped', Boolean(), default=False)
+   Column('order_id', Integer(), primary_key=True),
+   Column('user_id', ForeignKey('users.user_id')),
+   Column('shipped', Boolean(), default=False)
 )
 
 line_items = Table('line_items', metadata,
@@ -42,7 +40,5 @@ line_items = Table('line_items', metadata,
 )
 
 engine = create_engine('sqlite:///:memory:')
-
-connection = engine.connect()
-
 metadata.create_all(engine)
+connection = engine.connect()
