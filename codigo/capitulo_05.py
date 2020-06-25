@@ -6,7 +6,7 @@ from sqlalchemy import MetaData, create_engine, Table, select
 metadata = MetaData()
 engine = create_engine('sqlite:///chinook.db')
 
-tables = []
+tables = {}
 table_names = [
     'artists', 'media_types', 'genres',
     'playlists', 'albums', 'employees',
@@ -16,11 +16,12 @@ table_names = [
 
 # Table reflections
 for tab_name in table_names:
-    tables.append(Table(tab_name, metadata, autoload=True, autoload_with=engine))
+    tables[tab_name] = Table(tab_name, metadata, autoload=True, autoload_with=engine)
 
 connection = engine.connect()
 
-for tab in tables:
+for t in tables.keys():
+    tab = tables[t]
     s = select([tab]).limit(10)
     print(f"== Tabela: {tab.name:<10} ======================================")
     print(f">>> Colunas: {[col.name for col in tab.columns]} ")
