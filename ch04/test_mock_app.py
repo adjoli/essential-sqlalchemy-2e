@@ -1,11 +1,10 @@
 import unittest
 from decimal import Decimal
 
-import mock
+from unittest import mock
 
 from db import dal, prep_db
 from app import get_orders_by_customer
-
 
 class TestApp(unittest.TestCase):
     cookie_orders = [(u'wlk001', u'cookiemon', u'111-111-1111')]

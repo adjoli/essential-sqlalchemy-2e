@@ -9,8 +9,8 @@ class DataAccessLayer:
     engine = None
     conn_string = None
     metadata = MetaData()
-    cookies = Table('cookies',
-        metadata,
+
+    cookies = Table('cookies', metadata,
         Column('cookie_id', Integer(), primary_key=True),
         Column('cookie_name', String(50), index=True),
         Column('cookie_recipe_url', String(255)),
@@ -54,11 +54,13 @@ dal = DataAccessLayer()
 
 def prep_db():
     ins = dal.cookies.insert()
-    dal.connection.execute(ins, cookie_name='dark chocolate chip',
-            cookie_recipe_url='http://some.aweso.me/cookie/recipe_dark.html',
-            cookie_sku='CC02',
-            quantity='1',
-            unit_cost='0.75')
+    dal.connection.execute(ins,
+        cookie_name='dark chocolate chip',
+        cookie_recipe_url='http://some.aweso.me/cookie/recipe_dark.html',
+        cookie_sku='CC02',
+        quantity='1',
+        unit_cost='0.75'
+    )
     inventory_list = [
         {
             'cookie_name': 'peanut butter',
@@ -99,6 +101,7 @@ def prep_db():
     ]
     ins = dal.users.insert()
     dal.connection.execute(ins, customer_list)
+
     ins = insert(dal.orders).values(user_id=1, order_id='wlk001')
     dal.connection.execute(ins)
     ins = insert(dal.line_items)
@@ -117,6 +120,7 @@ def prep_db():
         }
     ]
     dal.connection.execute(ins, order_items)
+
     ins = insert(dal.orders).values(user_id=2, order_id='ol001')
     dal.connection.execute(ins)
     ins = insert(dal.line_items)
