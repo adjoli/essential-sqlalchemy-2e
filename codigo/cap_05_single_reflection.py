@@ -20,12 +20,18 @@ for tab_name in table_names:
 
 connection = engine.connect()
 
-for t in tables.keys():
-    tab = tables[t]
-    s = select([tab]).limit(10)
-    print(f"== Tabela: {tab.name:<10} ======================================")
-    print(f">>> Colunas: {[col.name for col in tab.columns]} ")
-    print('=' * 60)
-    for rec in engine.execute(s).fetchall():
-        print(rec)
-        print('-' * 60)
+
+def main():
+    for t in tables.keys():
+        tab = tables[t]
+        s = select([tab]).limit(10)
+        print(f"== Tabela: {tab.name:<10} ======================================")
+        print(f">>> Colunas: {[col.name for col in tab.columns]} ")
+        print('=' * 60)
+        for rec in engine.execute(s).fetchall():
+            print(rec)
+            print('-' * 60)
+
+
+if __name__ == '__main__':
+    main()
