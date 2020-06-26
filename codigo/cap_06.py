@@ -56,3 +56,5 @@ class LineItem(Base):
 
 
 engine = create_engine('sqlite:///:memory:')
+
+Base.metadata.create_all(engine)
